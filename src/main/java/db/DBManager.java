@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ *  Establishes connection to database, executes all statements, and parses query results
  */
 public abstract class DBManager {
 
