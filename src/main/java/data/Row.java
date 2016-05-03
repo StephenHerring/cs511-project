@@ -5,31 +5,40 @@ package data;
  */
 public class Row {
 
-    private int mNum;
     private int mTRank;
     private int mHRank;
 
-    public Row(int num, int tRank) {
-        mNum = num;
-        mTRank = tRank;
-        mHRank = -1;
-    }
+    private int tRank;
+    private String name;
+    private float gpa;
+    private long student_id;
 
-    public Row(int num, int tRank, int hRank) {
-        mNum = num;
+    public Row(String name, float gpa, long student_id, int tRank, int hRank) {
+        this.gpa = gpa;
+        this.student_id = student_id;
+        this.name = name;
         mTRank = tRank;
         mHRank = hRank;
     }
-
-    public int getNum() {
-        return mNum;
+    public Row(int tRank, String name, float gpa, long student_id){
+        this.tRank = tRank;
+        this.name = name;
+        this.gpa = gpa;
+        this.student_id = student_id;
     }
 
     public int getTRank() {
-        return mTRank;
+        return this.tRank;
     }
 
     public int getHRank() {
         return mHRank;
     }
+
+    public String getName() { return  this.name;}
+
+    public float getGPA() { return  this.gpa;}
+
+    public long getStundent_id() {return this.student_id;}
+
 }

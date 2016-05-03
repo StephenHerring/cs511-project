@@ -1,7 +1,7 @@
-import implementation.CountedBTreeImplementation;
-import implementation.HierarchicalImplementation;
+//import implementation.CountedBTreeImplementation;
+//import implementation.HierarchicalImplementation;
 import implementation.NaiveImplementation;
-
+import view.Position;
 public class Main {
 
     public static void main(String[] args) {
@@ -18,9 +18,10 @@ public class Main {
 
         */
 
-        CountedBTreeImplementation countedBTreeImplementation = new CountedBTreeImplementation();
-        double countedTime = (double) countedBTreeImplementation.timeExecution() / 1000000000.0;
-        System.out.println("Counted B-Tree implementation took: " + countedTime +
-                " seconds inserting " + countedBTreeImplementation.getTotalElements() + " rows");
+//        CountedBTreeImplementation countedBTreeImplementation = new CountedBTreeImplementation();
+//        double countedTime = (double) countedBTreeImplementation.timeExecution() / 1000000000.0;
+//        System.out.println("Counted B-Tree implementation took: " + countedTime +
+//                " seconds inserting " + countedBTreeImplementation.getTotalElements() + " rows");
+        Position pos = new Position();
     }
 }

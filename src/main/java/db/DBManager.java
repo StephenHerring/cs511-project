@@ -19,7 +19,7 @@ public abstract class DBManager {
     static final String DB_URL = "jdbc:mysql://localhost:3306/cs511";
 
     static final String USERNAME = "root";
-    static final String PASSWORD = "welcome";
+    static final String PASSWORD = "root";
 
     private Connection mConn;
 
@@ -36,6 +36,7 @@ public abstract class DBManager {
         return false;
     }
 
+
     public List<Row> query(String query) {
         try {
             ResultSet resultSet = mConn.createStatement().executeQuery(query);
@@ -45,6 +46,16 @@ public abstract class DBManager {
         }
         return null;
     }
+    public int query_max(String query) {
+        try {
+            ResultSet resultSet = mConn.createStatement().executeQuery(query);
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
 
     protected void start() {
         try {
@@ -66,9 +77,12 @@ public abstract class DBManager {
     private List<Row> parseResultSet(ResultSet resultSet) throws SQLException {
         List<Row> elements = new ArrayList<>();
         while (resultSet.next()) {
+            //System.out.println("Result set size:" + resultSet.getInt(1) + resultSet.getString(2) + resultSet.getFloat(3) + resultSet.getLong(4));
             int num = resultSet.getInt(1);
-            int tRank = resultSet.getInt(2);
-            Row element = new Row(num, tRank);
+            String name = resultSet.getString(2);
+            float gpa = resultSet.getFloat(3);
+            long student_id = resultSet.getLong(4);
+            Row element = new Row(num, name, gpa, student_id);
             elements.add(element);
         }
         return elements;

@@ -26,13 +26,16 @@ public abstract class Implementation {
 
     private void execute(int numElements) {
         for (int i = 0; i < numElements; i++) {
-            insertWithRandomTRank(i);
+            ;//insertWithRandomTRank(i);
         }
     }
 
     public List<Row> queryByTRank(int tRank) {
         String query = "SELECT * FROM Example WHERE trank=" + tRank + ";";
         return mIntegerDBManager.query(query);
+    }
+    public List<Row> query(String qstmt){
+        return mIntegerDBManager.query(qstmt);
     }
 
     public abstract void insert(Row element);
@@ -45,10 +48,10 @@ public abstract class Implementation {
         return TOTAL_ELEMENTS;
     }
 
-    protected void insertWithRandomTRank(int num) {
+    protected void insertWithRandomTRank(String name, float gpa,long student_id) {
         int tRank = (int) (Math.random() * TOTAL_ELEMENTS);
 
-        Row element = new Row(num, tRank);
+        Row element = new Row(tRank, name, gpa, student_id);
         if (queryByTRank(tRank).size() > 0) {
             incrementTRanks(element);
         }
