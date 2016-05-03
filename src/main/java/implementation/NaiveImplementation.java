@@ -1,35 +1,33 @@
 package implementation;
 
-import data.DatabaseElement;
+import data.Row;
 
 public class NaiveImplementation extends Implementation {
 
     @Override
-    public void insert(DatabaseElement element) {
+    public void insert(Row element) {
         int number = element.getNum();
         int tRank = element.getTRank();
 
-        String statement = "INSERT INTO Example (number, trank, hrank) VALUES ("
-                + number + ", " + tRank + ", " + -1 + ");";
+        String statement = "INSERT INTO Example (number, trank) VALUES ("
+                + number + ", " + tRank + ");";
         mIntegerDBManager.executeWriteStatement(statement);
     }
 
     @Override
-    public void incrementTRanks(DatabaseElement element) {
+    public void delete(Row element) {
+        int number = element.getNum();
+        int tRank = element.getTRank();
+
+        String statement = "DELETE FROM Example WHERE trank=" + tRank + ";";
+        mIntegerDBManager.executeWriteStatement(statement);
+    }
+
+    @Override
+    public void incrementTRanks(Row element) {
         int tRank = element.getTRank();
         String statement = "UPDATE Example SET trank = trank + 1 WHERE trank>=" + tRank + ";";
         mIntegerDBManager.executeWriteStatement(statement);
-    }
-
-    @Override
-    protected void insertWithRandomTRank(int num) {
-        int tRank = (int) (Math.random() * TOTAL_ELEMENTS);
-
-        DatabaseElement element = new DatabaseElement(num, tRank);
-        if (queryByTRank(tRank).size() > 0) {
-            incrementTRanks(element);
-        }
-        insert(element);
     }
 
 }

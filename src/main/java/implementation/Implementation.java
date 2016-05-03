@@ -1,7 +1,7 @@
 package implementation;
 
 
-import data.DatabaseElement;
+import data.Row;
 import db.DBManager;
 import db.IntegerDBManager;
 
@@ -30,19 +30,28 @@ public abstract class Implementation {
         }
     }
 
-    public List<DatabaseElement> queryByTRank(int tRank) {
+    public List<Row> queryByTRank(int tRank) {
         String query = "SELECT * FROM Example WHERE trank=" + tRank + ";";
         return mIntegerDBManager.query(query);
     }
 
-    public abstract void insert(DatabaseElement element);
+    public abstract void insert(Row element);
 
-    public abstract void incrementTRanks(DatabaseElement element);
+    public abstract void delete(Row element);
+
+    public abstract void incrementTRanks(Row element);
 
     public int getTotalElements() {
         return TOTAL_ELEMENTS;
     }
 
-    protected abstract void insertWithRandomTRank(int num);
+    protected void insertWithRandomTRank(int num) {
+        int tRank = (int) (Math.random() * TOTAL_ELEMENTS);
 
+        Row element = new Row(num, tRank);
+        if (queryByTRank(tRank).size() > 0) {
+            incrementTRanks(element);
+        }
+        insert(element);
+    }
 }

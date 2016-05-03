@@ -1,7 +1,7 @@
 package db;
 
 
-import data.DatabaseElement;
+import data.Row;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -36,7 +36,7 @@ public abstract class DBManager {
         return false;
     }
 
-    public List<DatabaseElement> query(String query) {
+    public List<Row> query(String query) {
         try {
             ResultSet resultSet = mConn.createStatement().executeQuery(query);
             return parseResultSet(resultSet);
@@ -63,12 +63,12 @@ public abstract class DBManager {
         }
     }
 
-    private List<DatabaseElement> parseResultSet(ResultSet resultSet) throws SQLException {
-        List<DatabaseElement> elements = new ArrayList<>();
+    private List<Row> parseResultSet(ResultSet resultSet) throws SQLException {
+        List<Row> elements = new ArrayList<>();
         while (resultSet.next()) {
             int num = resultSet.getInt(1);
             int tRank = resultSet.getInt(2);
-            DatabaseElement element = new DatabaseElement(num, tRank);
+            Row element = new Row(num, tRank);
             elements.add(element);
         }
         return elements;

@@ -1,28 +1,31 @@
 package implementation;
 
-import data.DatabaseElement;
-
-import java.util.List;
+import data.Row;
+import tree.CountedBTree;
 
 public class CountedBTreeImplementation extends Implementation {
 
-    @Override
-    public List<DatabaseElement> queryByTRank(int tRank) {
-        return null;
+    private static int ORDER = 8;
+    private CountedBTree mTree;
+
+    public CountedBTreeImplementation() {
+        super();
+        mTree = new CountedBTree(ORDER, mIntegerDBManager);
     }
 
     @Override
-    public void insert(DatabaseElement element) {
-
+    public void insert(Row element) {
+        mTree.insert(element);
     }
 
     @Override
-    public void incrementTRanks(DatabaseElement element) {
-
+    public void delete(Row element) {
+        mTree.delete(element);
     }
 
     @Override
-    protected void insertWithRandomTRank(int num) {
-
+    public void incrementTRanks(Row element) {
+        // Do nothing
     }
+
 }

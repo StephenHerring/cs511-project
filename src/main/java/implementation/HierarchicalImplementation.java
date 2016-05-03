@@ -1,21 +1,29 @@
 package implementation;
 
-import data.DatabaseElement;
+import data.Row;
 
 import java.util.List;
 
 public class HierarchicalImplementation extends Implementation {
 
-    private static int BUCKET_SIZE = 16;
+    private static int BUCKET_SIZE = 32;
 
     @Override
-    public void insert(DatabaseElement element) {
+    public void insert(Row element) {
         int number = element.getNum();
         int hRank = element.getTRank();
         int tRank = hRank * BUCKET_SIZE;
 
-        String statement = "INSERT INTO Example (number, trank, hrank) VALUES ("
-                + number + ", " + tRank + "," + hRank + ");";
+        String statement = "INSERT INTO Example (number, trank) VALUES ("
+                + number + ", " + tRank + ");";
+        mIntegerDBManager.executeWriteStatement(statement);
+    }
+
+    @Override
+    public void delete(Row element) {
+        int tRank = element.getTRank();
+
+        String statement = "DELETE FROM Example WHERE trank=" + tRank + ";";
         mIntegerDBManager.executeWriteStatement(statement);
     }
 
@@ -24,7 +32,7 @@ public class HierarchicalImplementation extends Implementation {
         int hRank = (int) (Math.random() * TOTAL_ELEMENTS);
         int tRank = hRank * BUCKET_SIZE;
 
-        DatabaseElement element = new DatabaseElement(num, tRank, hRank);
+        Row element = new Row(num, tRank, hRank);
         if (queryByTRank(tRank).size() > 0) {
             incrementTRanks(element);
         }
@@ -33,7 +41,7 @@ public class HierarchicalImplementation extends Implementation {
     }
 
     @Override
-    public void incrementTRanks(DatabaseElement element) {
+    public void incrementTRanks(Row element) {
         int hRank = element.getHRank();
         if (queryByHRank(hRank).size() < 16) {
             // If bucket is not full, we simply increment elements in bucket
@@ -41,26 +49,31 @@ public class HierarchicalImplementation extends Implementation {
         } else {
             // Otherwise, we have to increment all elements the next bucket, then
             // increment all elements in current bucket (accounting for spillover)
-            DatabaseElement nextBucket = new DatabaseElement(-1, -1, hRank + 1);
+            Row nextBucket = new Row(-1, -1, hRank + 1);
             incrementTRanks(nextBucket);
             incrementBucket(hRank);
         }
     }
 
 
-    private List<DatabaseElement> queryByHRank(int hRank) {
-        String query = "SELECT * FROM Example WHERE hrank=" + hRank + ";";
+    private List<Row> queryByHRank(int hRank) {
+        int tRank = hRank * BUCKET_SIZE;
+
+        String query = "SELECT * FROM Example WHERE trank>=" + tRank +
+                " AND trank<" + (tRank + BUCKET_SIZE) + ";";
         return mIntegerDBManager.query(query);
     }
 
     private void incrementBucket(int hRank) {
+        int tRank = hRank * BUCKET_SIZE;
         // Increment tuple rank of all elements in current bucket
-        String statement = "UPDATE Example SET trank = trank + 1 WHERE hrank=" + hRank + ";";
+        String statement = "UPDATE Example SET trank = trank + 1 WHERE trank>=" + tRank
+                + " AND trank<" + (tRank + BUCKET_SIZE) + ";";
         mIntegerDBManager.executeWriteStatement(statement);
 
         // If we have more elements in the bucket than can fit, transfer any spillover elements to next bucket
         String spilloverStatement = "UPDATE Example SET hrank = hrank + 1 WHERE hrank=" +
-                hRank + " AND trank >=" + (hRank * BUCKET_SIZE + 16) + ";";
+                hRank + " AND trank >=" + (hRank * BUCKET_SIZE + BUCKET_SIZE) + ";";
         mIntegerDBManager.executeWriteStatement(spilloverStatement);
     }
 

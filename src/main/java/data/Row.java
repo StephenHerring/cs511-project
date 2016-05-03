@@ -1,21 +1,21 @@
 package data;
 
 /**
- * Created by Stephen on 4/23/2016.
+ * trank, Name, GPA, Student_ID
  */
-public class DatabaseElement {
+public class Row {
 
     private int mNum;
     private int mTRank;
     private int mHRank;
 
-    public DatabaseElement(int num, int tRank) {
+    public Row(int num, int tRank) {
         mNum = num;
         mTRank = tRank;
         mHRank = -1;
     }
 
-    public DatabaseElement(int num, int tRank, int hRank) {
+    public Row(int num, int tRank, int hRank) {
         mNum = num;
         mTRank = tRank;
         mHRank = hRank;
