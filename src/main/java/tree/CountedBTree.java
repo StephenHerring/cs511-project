@@ -58,7 +58,7 @@ public class CountedBTree {
 
         left.setChild(index+1, splitNode);
 
-        for (int i = left.getKeyCount(); i > index; i--) {
+        for (int i = left.getKeyCount()-1; i > index; i--) {
             left.setValue(i+1, left.getValue(i));
         }
 
@@ -86,8 +86,9 @@ public class CountedBTree {
             int count = node.getKeyCount();
             node.setKeyCount(count+1);
 
-//            String statement = "INSERT INTO Example "
- //           mDBManager.executeWriteStatement(statement);
+            String statement = "INSERT INTO Example (number, trank) VALUES ("
+                    + row.getNum() + ", " + row.getTRank() + ");";
+            mDBManager.executeWriteStatement(statement);
 
         } else {
             int i = 0;
