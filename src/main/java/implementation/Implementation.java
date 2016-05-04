@@ -31,7 +31,7 @@ public abstract class Implementation {
     }
 
     public List<Row> queryByTRank(int tRank) {
-        String query = "SELECT * FROM Example WHERE trank=" + tRank + ";";
+        String query = "SELECT * FROM test WHERE trank=" + tRank + ";";
         return mIntegerDBManager.query(query);
     }
     public List<Row> query(String qstmt){

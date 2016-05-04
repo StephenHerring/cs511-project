@@ -27,9 +27,14 @@ public class NaiveImplementation extends Implementation {
 
     @Override
     public void incrementTRanks(Row element) {
+        System.out.println("I am here");
         int tRank = element.getTRank();
-        String statement = "UPDATE test SET trank = trank + 1 WHERE trank>=" + tRank + ";";
-        mIntegerDBManager.executeWriteStatement(statement);
+
+        int maxIndex = get_highest_index();
+        for (int index = maxIndex; index >=tRank; index--){
+            String statement = "UPDATE test SET trank = trank + 1 WHERE trank = " + index + ";";
+            mIntegerDBManager.executeWriteStatement(statement);
+        }
     }
 
     public void decrementTRanks(Row element) {
