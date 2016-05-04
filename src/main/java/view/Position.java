@@ -21,6 +21,7 @@ import osql.osql;
  * @author Himel
  */
 public class Position {
+    public JTextArea clockArea;
     public  String selectedMethod = "Hierarchical";
     osql osqlInterface = new osql();
 
@@ -30,6 +31,8 @@ public class Position {
     public  String getSelectedMethod(){
         return  selectedMethod;
     }
+
+
     public List<Row> sql_query(String qstmt){
         //converts osql statement to equivalent sql statement
         qstmt = osqlInterface.convert(qstmt);
@@ -47,8 +50,10 @@ public class Position {
         if (qstmt.toLowerCase().contains("select")){
             NaiveImplementation selectEngine = new NaiveImplementation();
             results = selectEngine.query(qstmt);
+            clockArea.setText(Long.toString(selectEngine.timeExecution()));
             return  results;
         }
+
         switch (method){
             case "Naive":{
                 System.out.println("Naive is executing");
@@ -98,10 +103,18 @@ public class Position {
         final JTextArea textArea = new JTextArea(5, 15);
         textArea.setBackground(Color.BLACK);
         textArea.setForeground(Color.GREEN);
-        textArea.setText("SELECT\nFROM\nWHERE");
+        textArea.setText("SELECT * \nFROM test \nWHERE trank=1");
         textArea.setFont(new Font("Serif", Font.BOLD, 26));
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
+
+        //final JTextArea clockArea = new JTextArea(1,1);
+        clockArea = new JTextArea(1,1);
+        clockArea.setBackground(Color.BLACK);
+        clockArea.setForeground(Color.RED);
+        clockArea.setText("00:00");
+        clockArea.setEditable(false);
+
 
         JButton button = new JButton("Execute");
         button.setPreferredSize(new Dimension(40, 40));
@@ -167,9 +180,9 @@ public class Position {
 
         firstPanel.add(input, BorderLayout.NORTH);
         firstPanel.add(textArea, BorderLayout.CENTER);
-
-        firstPanel.add(algoMethod, BorderLayout.NORTH);
-        firstPanel.add(button, BorderLayout.SOUTH);
+        firstPanel.add(clockArea, BorderLayout.EAST);
+        firstPanel.add(algoMethod, BorderLayout.WEST);
+        firstPanel.add(button, BorderLayout.SOUTH,2);
 
 
         window.add(firstPanel, BorderLayout.NORTH);
