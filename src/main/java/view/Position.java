@@ -31,11 +31,19 @@ public class Position {
         return  selectedMethod;
     }
     public List<Row> sql_query(String qstmt){
+        //converts osql statement to equivalent sql statement
         qstmt = osqlInterface.convert(qstmt);
+        System.out.println("SQL Query is: " + qstmt);
+        if (qstmt == "Malformed Expression"){
+            return  null;
+        }
+        // get selected method
         String method = getSelectedMethod();
-        List<Row> results = new ArrayList();
         System.out.println("Selected Method is " + method);
-        System.out.println("Query is: " + qstmt);
+        // array to store results to be displayed later on a window
+        List<Row> results = new ArrayList();
+
+        // if select statement run it here irrespective of method using Naive Implementation
         if (qstmt.toLowerCase().contains("select")){
             NaiveImplementation selectEngine = new NaiveImplementation();
             results = selectEngine.query(qstmt);
@@ -44,19 +52,21 @@ public class Position {
         switch (method){
             case "Naive":{
                 System.out.println("Naive is executing");
-
                 NaiveImplementation naiveImplementation = new NaiveImplementation();
                 if (qstmt.contains("insert")) {
-                    Row element = new Row(84738746, "Ana", 2.3f, 984873);
-                    naiveImplementation.insert(element);
+                    Row insert_ele = osqlInterface.get_insert_row();
+                    if (insert_ele == null){
+                        return  null;
+                    }
+                    naiveImplementation.insert(insert_ele);
                 }
                 else if (qstmt.contains("delete")){
-                    Row element = new Row(84738746, "Ana", 2.3f, 984873);
-                    naiveImplementation.delete(element);
+                    Row delete_ele = osqlInterface.get_delete_row();
+                    if (delete_ele == null){
+                        return  null;
+                    }
+                    naiveImplementation.delete(delete_ele);
                 }
-                System.out.println(results.size());
-                System.out.println(results.get(0));
-
                 break;
             }
             case "Hierarchical":{
@@ -103,8 +113,13 @@ public class Position {
             {
                 String gotQuery = textArea.getText().toLowerCase();
                 List<Row> results = sql_query(gotQuery);
+                if (results == null){
+                    textArea.setText("Malformed Expression. Please check");
+                }
+                // if its not a select query nothing to do
                 if (!gotQuery.contains("select"))
                 {
+                    textArea.setText("Query Executed Successfully");
                 return;
                 }
                 JFrame tableFrame = new JFrame("OSQL Result");

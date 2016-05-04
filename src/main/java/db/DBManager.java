@@ -49,7 +49,11 @@ public abstract class DBManager {
     public int query_max(String query) {
         try {
             ResultSet resultSet = mConn.createStatement().executeQuery(query);
-            return resultSet.getInt(1);
+            while(resultSet.next()) {
+                int pos = resultSet.getInt(1);
+                System.out.println("mx index:" + pos);
+                return resultSet.getInt(1);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
