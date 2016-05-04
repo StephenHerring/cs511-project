@@ -22,6 +22,7 @@ public class NaiveImplementation extends Implementation {
         String statement = "DELETE FROM test WHERE trank=" + tRank + ";";
         System.out.println(statement);
         mIntegerDBManager.executeWriteStatement(statement);
+        decrementTRanks(element);
     }
 
     @Override
@@ -30,6 +31,13 @@ public class NaiveImplementation extends Implementation {
         String statement = "UPDATE test SET trank = trank + 1 WHERE trank>=" + tRank + ";";
         mIntegerDBManager.executeWriteStatement(statement);
     }
+
+    public void decrementTRanks(Row element) {
+        int tRank = element.getTRank();
+        String statement = "UPDATE test SET trank = trank - 1 WHERE trank>=" + tRank + ";";
+        mIntegerDBManager.executeWriteStatement(statement);
+    }
+
     public int get_highest_index(){
        return  mIntegerDBManager.query_max("select max(trank) from test");
     }

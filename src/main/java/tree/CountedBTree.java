@@ -86,8 +86,8 @@
 //            int count = node.getKeyCount();
 //            node.setKeyCount(count+1);
 //
-//          //  String statement = "INSERT INTO Example (number, trank) VALUES ("
-//           //         + row.getNum() + ", " + row.getTRank() + ");";
+//            String statement = "INSERT INTO Example (number, trank) VALUES ("
+//                    + row.getNum() + ", " + row.getTRank() + ");";
 //            mDBManager.executeWriteStatement(statement);
 //
 //        } else {
