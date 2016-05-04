@@ -59,9 +59,17 @@ public class Position {
                 System.out.println("Naive is executing");
                 NaiveImplementation naiveImplementation = new NaiveImplementation();
                 if (qstmt.contains("insert")) {
+
                     Row insert_ele = osqlInterface.get_insert_row();
                     if (insert_ele == null){
                         return  null;
+                    }
+                    System.out.println("insert trank:" + insert_ele.getTRank());
+                    List<Row> checkDup = naiveImplementation.queryByTRank(insert_ele.getTRank());
+                   // System.out.println("Checkdup" + checkDup.get(0).getTRank());
+                    System.out.println("Checkdupsize:" + checkDup.size());
+                    if (checkDup.size()>0 && checkDup.get(0).getTRank()==insert_ele.getTRank()){
+                        naiveImplementation.incrementTRanks(insert_ele);
                     }
                     naiveImplementation.insert(insert_ele);
                 }
