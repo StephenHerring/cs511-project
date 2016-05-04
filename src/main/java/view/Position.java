@@ -72,6 +72,7 @@ public class Position {
                     }
                     naiveImplementation.delete(delete_ele);
                 }
+                clockArea.setText(Long.toString(naiveImplementation.timeExecution()));
                 break;
             }
             case "Hierarchical":{
