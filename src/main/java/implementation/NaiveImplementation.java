@@ -13,7 +13,7 @@ public class NaiveImplementation extends Implementation {
 
         String statement = "INSERT INTO test (trank, name, gpa, student_id) VALUES ("
                 + tRank + ", " + "'" + name + "'" +  "," + gpa + "," + student_id  + ");";
-        mIntegerDBManager.executeWriteStatement(statement);
+        mDBManager.executeWriteStatement(statement);
     }
 
     @Override
@@ -21,7 +21,7 @@ public class NaiveImplementation extends Implementation {
         int tRank = element.getTRank();
         String statement = "DELETE FROM test WHERE trank=" + tRank + ";";
         System.out.println(statement);
-        mIntegerDBManager.executeWriteStatement(statement);
+        mDBManager.executeWriteStatement(statement);
         decrementTRanks(element);
     }
 
@@ -33,18 +33,18 @@ public class NaiveImplementation extends Implementation {
         int maxIndex = get_highest_index();
         for (int index = maxIndex; index >=tRank; index--){
             String statement = "UPDATE test SET trank = trank + 1 WHERE trank = " + index + ";";
-            mIntegerDBManager.executeWriteStatement(statement);
+            mDBManager.executeWriteStatement(statement);
         }
     }
 
     public void decrementTRanks(Row element) {
         int tRank = element.getTRank();
         String statement = "UPDATE test SET trank = trank - 1 WHERE trank>=" + tRank + ";";
-        mIntegerDBManager.executeWriteStatement(statement);
+        mDBManager.executeWriteStatement(statement);
     }
 
     public int get_highest_index(){
-       return  mIntegerDBManager.query_max("select max(trank) from test");
+       return  mDBManager.query_max("select max(trank) from test");
     }
 
 }

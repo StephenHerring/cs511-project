@@ -1,6 +1,7 @@
 package db;
 
 
+import data.Lookup;
 import data.Row;
 
 import java.sql.Connection;
@@ -13,13 +14,13 @@ import java.util.List;
 /**
  *  Establishes connection to database, executes all statements, and parses query results
  */
-public abstract class DBManager {
+public class DBManager {
 
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost:3306/cs511";
 
     static final String USERNAME = "root";
-    static final String PASSWORD = "root";
+    static final String PASSWORD = "welcome";
 
     private Connection mConn;
 
@@ -46,6 +47,17 @@ public abstract class DBManager {
         }
         return null;
     }
+
+    public List<Lookup> queryLookup(String query) {
+        try {
+            ResultSet resultSet = mConn.createStatement().executeQuery(query);
+            return parseLookupResultSet(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public int query_max(String query) {
         try {
             ResultSet resultSet = mConn.createStatement().executeQuery(query);
@@ -59,6 +71,8 @@ public abstract class DBManager {
         }
         return -1;
     }
+
+
 
 
     protected void start() {
@@ -87,6 +101,17 @@ public abstract class DBManager {
             float gpa = resultSet.getFloat(3);
             long student_id = resultSet.getLong(4);
             Row element = new Row(num, name, gpa, student_id);
+            elements.add(element);
+        }
+        return elements;
+    }
+
+    private List<Lookup> parseLookupResultSet(ResultSet resultSet) throws SQLException {
+        List<Lookup> elements = new ArrayList<>();
+        while (resultSet.next()) {
+            int lRank = resultSet.getInt(1);
+            int tRank = resultSet.getInt(2);
+            Lookup element = new Lookup(lRank, tRank);
             elements.add(element);
         }
         return elements;

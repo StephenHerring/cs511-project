@@ -3,7 +3,6 @@ package implementation;
 
 import data.Row;
 import db.DBManager;
-import db.IntegerDBManager;
 
 import java.util.List;
 
@@ -11,31 +10,31 @@ public abstract class Implementation {
 
     protected static int TOTAL_ELEMENTS = 1024;
 
-    protected DBManager mIntegerDBManager;
+    protected DBManager mDBManager;
 
     public Implementation() {
-        mIntegerDBManager = new IntegerDBManager();
+        mDBManager = new DBManager();
     }
 
     public long timeExecution() {
         long start = System.nanoTime();
-        execute(TOTAL_ELEMENTS);
+        execute();
         long end = System.nanoTime();
         return end - start;
     }
 
-    private void execute(int numElements) {
-        for (int i = 0; i < numElements; i++) {
+    protected void execute() {
+        for (int i = 0; i < TOTAL_ELEMENTS; i++) {
             ;//insertWithRandomTRank(i);
         }
     }
 
     public List<Row> queryByTRank(int tRank) {
         String query = "SELECT * FROM test WHERE trank=" + tRank + ";";
-        return mIntegerDBManager.query(query);
+        return mDBManager.query(query);
     }
     public List<Row> query(String qstmt){
-        return mIntegerDBManager.query(qstmt);
+        return mDBManager.query(qstmt);
     }
 
     public abstract void insert(Row element);

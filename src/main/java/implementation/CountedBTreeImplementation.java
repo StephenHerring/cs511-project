@@ -10,7 +10,7 @@
 //
 //    public CountedBTreeImplementation() {
 //        super();
-//        mTree = new CountedBTree(ORDER, mIntegerDBManager);
+//        mTree = new CountedBTree(ORDER, mDBManager);
 //    }
 //
 //    @Override
